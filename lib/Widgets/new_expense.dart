@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:expense_tracker/models/expense.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 final formatter = DateFormat.yMd();
 
@@ -12,6 +14,8 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpenseState extends State<NewExpense> {
+  final Url = Uri.https(
+      'flutter-prep-f8ad1-default-rtdb.firebaseio.com', 'expense-list.json');
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selecterDate;
@@ -29,7 +33,7 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  void _submitExpenseData() {
+  void _submitExpenseData() async {
     final enteredAmount = double.tryParse(_amountController.text);
     final amountIsValid = enteredAmount == null || enteredAmount <= 0;
     if (_titleController.text.trim().isEmpty ||
@@ -51,6 +55,14 @@ class _NewExpenseState extends State<NewExpense> {
               ));
       return;
     }
+    await http.post(Url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'title': _titleController.text.trim(),
+          'amount': enteredAmount,
+          'date': _selecterDate!.toString(),
+          'category': _selectedCategor.name
+        }));
     widget.onAddExpense(Expense(
         title: _titleController.text.trim(),
         amount: enteredAmount,
