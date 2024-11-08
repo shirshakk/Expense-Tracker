@@ -7,8 +7,9 @@ import 'dart:convert';
 final formatter = DateFormat.yMd();
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key, required this.onAddExpense});
-  final void Function(Expense expense) onAddExpense;
+  const NewExpense({
+    super.key,
+  });
   @override
   State<NewExpense> createState() => _NewExpenseState();
 }
@@ -55,7 +56,7 @@ class _NewExpenseState extends State<NewExpense> {
               ));
       return;
     }
-    await http.post(Url,
+    var response = await http.post(Url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'title': _titleController.text.trim(),
@@ -63,11 +64,7 @@ class _NewExpenseState extends State<NewExpense> {
           'date': _selecterDate!.toString(),
           'category': _selectedCategor.name
         }));
-    widget.onAddExpense(Expense(
-        title: _titleController.text.trim(),
-        amount: enteredAmount,
-        date: _selecterDate!,
-        category: _selectedCategor));
+    print(response.statusCode);
     Navigator.pop(context);
   }
 

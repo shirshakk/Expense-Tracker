@@ -2,6 +2,8 @@ import 'package:expense_tracker/Widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/Widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -11,6 +13,8 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
+  final url = Uri.https(
+      'flutter-prep-f8ad1-default-rtdb.firebaseio.com', 'expense-list.json');
   final List<Expense> _registeredExpenses = [
     Expense(
         title: 'Flutter Course',
@@ -27,13 +31,32 @@ class _ExpensesState extends State<Expenses> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+      builder: (ctx) => NewExpense(),
     );
   }
 
-  void _addExpense(Expense expense) {
+  @override
+  void initState() {
+    super.initState();
+    _addExpense();
+  }
+
+  void _addExpense() async {
+    final response = await http.get(url);
+    final Map<String, dynamic> Data = json.decode(response.body);
+    final List<Expense> newData = [];
+    for (final item in Data.entries) {
+      newData.add(Expense(
+        title: item.value['title'],
+        amount: item.value['amount'],
+        date: DateTime.parse(item.value['date']),
+        category: Category.values.firstWhere(
+          (c) => c.toString() == 'Category.' + item.value['category'],
+        ),
+      ));
+    }
     setState(() {
-      _registeredExpenses.add(expense);
+      _registeredExpenses.addAll(newData);
     });
   }
 
