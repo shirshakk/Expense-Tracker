@@ -1,4 +1,3 @@
-Certainly! Here's the content written in a markdown format that is suitable for a `README.md` file on GitHub:
 
 ```markdown
 # Expense Tracker
