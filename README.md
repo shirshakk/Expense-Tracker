@@ -57,9 +57,3 @@ Follow these steps to run the project locally:
 - **Flutter version**: 3.18.0-18.0.pre.54
 - **Dart version**: 3.5.3
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-This format is ready to be added as the `README.md` file in your GitHub repository. It contains the essential information like the project description, instructions on how to run it, tech stack, and dependencies. Let me know if you'd like to add or modify any part!
