@@ -14,15 +14,14 @@ The **Expense Tracker** application helps users to keep track of their daily exp
 The main entry point of the application is defined in `main.dart`.  
 This file initializes the Flutter application and sets the `Expenses` widget as the home screen.
 
+   ```
+
 ## How to Run the Project
 
 Follow these steps to run the project locally:
 
 1. **Clone the repository**:
-   ```bash
    git clone https://github.com/your-repo/expense-tracker.git
-   ```
-
 2. **Navigate to the project directory**:
    ```bash
    cd expense-tracker
